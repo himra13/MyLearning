@@ -1,0 +1,42 @@
+{
+    "python.pythonPath": "C:\\Users\\apansukij\\Anaconda3\\python.exe",
+    "editor.minimap.enabled": false,
+    "jupyter.sendSelectionToInteractiveWindow": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "python.defaultInterpreterPath": "C:\\Users\\apansukij\\Anaconda3\\python.exe",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.colorCustomizations": {
+            "editor.lineHighlightBackground": "#ffb1582d"
+    },
+    "search.exclude": {
+        "**/.idea": true
+    },
+    "editor.bracketPairColorization.enabled": true,
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+        // "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe (migrated)": {
+        //     "path": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "C:\\Users\\apansukij\\AppData\\Local\\Programs\\Git\\bin\\bash.exe":{
+            "path": "C:\\Users\\apansukij\\AppData\\Local\\Programs\\Git\\bin\\bash.exe", 
+            "args": [
+                "cmd",
+                "/K",
+                "C:\\Users\\apansukij\\AppData\\Local\\Continuum\\anaconda3\\Scripts\\activate.bat C:\\Users\\apansukij\\AppData\\Local\\Continuum\\anaconda3"
+            ]
+        }
+    },
+    "terminal.integrated.automationShell.windows": "cmd.exe",
+    "editor.codeActionsOnSave": null,
+    "editor.renderLineHighlight": "all",
+    "editor.semanticTokenColorCustomizations": null,
+    "editor.scrollbar.vertical": "visible",
+    "timeline.excludeSources": [],
+    "diffEditor.renderSideBySide": false,
+    "code-runner.runInTerminal": true
+}
