@@ -1,7 +1,0 @@
-@REM https://realpython.com/python-virtual-environments-a-primer/
-
-@REM create virtualenv named mypython
-virtualenv mypython
-
-@REM activate mypython
-.\mypython\Scripts\activate
