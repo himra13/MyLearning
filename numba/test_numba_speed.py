@@ -41,4 +41,3 @@ go_fast_numba(x)
 # object mode
 # Note that Pandas is not understood by Numba and as a result Numba would simply run this code via the interpreter but with the added cost of the Numba internal overheads!
 @jit
-# %%
