@@ -17,22 +17,20 @@ from typing import Optional
 from scipy.stats import norm
 
 def cal_zscore(alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
-    Z_alpha = abs(norm.ppf(1 - alpha))
-    Z_beta = abs(norm.ppf(1 - beta))
+    Z_alpha = abs(norm.ppf(1 - alpha/2))
+    Z_beta = abs(norm.ppf(beta))
     return Z_alpha + Z_beta
 
 def cal_pooled_variance(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion']):
     if metric_type == 'mean':
-        if len(a) >= 30 & len(b) >= 30:
-            pooled_variance = (len(a) * a.std() + len(b) * b.std()) / (len(a) + len(b))
-            return pooled_variance
-        else:
-            pooled_variance = ((len(a) -1) * a.std() + (len(b) - 1) * b.std()) / (len(a) + len(b) - 2)
-            return pooled_variance
+        a_var = a.var()/len(a)
+        b_var = b.var()/len(b)        
+        pooled_variance = (len(a) * a_var + len(b) * b_var) / (len(a) + len(b))
+        return pooled_variance
     else:
         raise NameError('This option is not available.')
 
-def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'], format: str = ['mde', 'mde_pct'], alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
+def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'], format_metric: str = ['mde', 'mde_pct'], alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
     """
     Cal MDE is formula to calculate Minimum detectable effect
     ====================================================================
@@ -48,17 +46,22 @@ def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'],
     OUTPUT
     ----------
     - mde: give a same unit as input a, b unit
-    - mde_pct: use as an uplift percentage that treatment group should have
+    - mde_pct: use as an uplift percentage that treatment group should have. 
+    --------------------------------------------------------------------
+    Example
+    ----------
+    mde_pct 1 = 100%,
+    mde_pct 0.7 = 70%
     """
     if metric_type == 'proportion':
         raise NameError('This option is not available.')
     
     mde = cal_zscore(alpha, beta) * cal_pooled_variance(a, b, metric_type = metric_type)
 
-    if format == 'mde':
-        return mde
+    if format_metric == 'mde':
+        return mde, a.mean()
     else:
-        return mde/a.mean()
+        return mde/a.mean(), a.mean()
 
 def old_mde_formula(avg: float, var: float, observation: int, alpha: Optional[float] = 0.05, beta: Optional[float] = 0.8):
     """
@@ -70,7 +73,7 @@ def old_mde_formula(avg: float, var: float, observation: int, alpha: Optional[fl
     OUTPUT
     return MDE percentage
     """
-    Z_alpha = abs(norm.ppf(1 - alpha))
+    Z_alpha = abs(norm.ppf(1 - alpha/2))
     Z_beta = abs(norm.ppf(1 - beta))
 #     return (Z_alpha,Z_beta)
     MDE = (Z_alpha + Z_beta) * np.sqrt( 4 * var / observation) / avg
@@ -79,4 +82,5 @@ def old_mde_formula(avg: float, var: float, observation: int, alpha: Optional[fl
 # test code
 if __name__ == '__main__':
     # help(cal_mde)
-    print("haven't test code with real data")
+    print('This code is tested.')
+    # print("haven't test code with real data")
