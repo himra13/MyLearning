@@ -30,7 +30,7 @@ def cal_pooled_variance(a: np.array, b: np.array, metric_type: str = ['mean', 'p
     else:
         raise NameError('This option is not available.')
 
-def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'], format_metric: str = ['mde', 'mde_pct'], alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
+def cal_mde(a: np.array, b: np.array, A_pre_metric: np.array, metric_type: str = ['mean', 'proportion'], format_metric: str = ['mde', 'mde_pct'], alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
     """
     Cal MDE is formula to calculate Minimum detectable effect
     ====================================================================
@@ -38,6 +38,7 @@ def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'],
     ----------
     - 'a' is an array format of difference between prepre and pre period of experiment of A variant on metric for allocation
     - 'b' is an array format of difference between prepre and pre period of experiment of B variant on metric for allocation
+    - 'A_pre_metric' is an array format of pre period production metric, in this case NRN.
     - 'metric_type' is type of calculation we want to compare
     - 'format' is output format we want to have, normally, I would suggest 'mde_pct' for the sake of simplicity.
     - 'alpha' is false positive rate, this identify P(False|True)
@@ -47,6 +48,8 @@ def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'],
     ----------
     - mde: give a same unit as input a, b unit
     - mde_pct: use as an uplift percentage that treatment group should have. 
+    - AVG(A_pre_metric): average pre production metric
+    - pooled_variance between A and B
     --------------------------------------------------------------------
     Example
     ----------
@@ -55,13 +58,13 @@ def cal_mde(a: np.array, b: np.array, metric_type: str = ['mean', 'proportion'],
     """
     if metric_type == 'proportion':
         raise NameError('This option is not available.')
-    
-    mde = cal_zscore(alpha, beta) * cal_pooled_variance(a, b, metric_type = metric_type)
+    pooled_variance = cal_pooled_variance(a, b, metric_type = metric_type)
+    mde = cal_zscore(alpha, beta) * pooled_variance
 
     if format_metric == 'mde':
-        return mde, a.mean()
+        return mde, A_pre_metric.mean(), pooled_variance
     else:
-        return mde/a.mean(), a.mean()
+        return mde/A_pre_metric.mean(), A_pre_metric.mean(), pooled_variance
 
 def old_mde_formula(avg: float, var: float, observation: int, alpha: Optional[float] = 0.05, beta: Optional[float] = 0.8):
     """
