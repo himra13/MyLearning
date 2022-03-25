@@ -17,7 +17,12 @@ from typing import Optional
 from scipy.stats import norm
 
 def cal_zscore(alpha: Optional[float] = 0.45, beta: Optional[float] = 0.8):
-    Z_alpha = abs(norm.ppf(1 - alpha/2))
+    """
+    Calculate Z-score 
+    -----------------
+    1. alpha in this case should be one tailed test not two tailed
+    """
+    Z_alpha = abs(norm.ppf(1 - alpha))
     Z_beta = abs(norm.ppf(beta))
     return Z_alpha + Z_beta
 
